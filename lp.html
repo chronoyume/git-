@@ -532,6 +532,68 @@
       transform: translateY(-2px);
     }
 
+    /* ========== FAQ ========== */
+    .faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: #fff;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 1.2rem 1.5rem;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #1e1b4b;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      transition: background 0.2s;
+    }
+
+    .faq-question:hover {
+      background: #f5f3ff;
+    }
+
+    .faq-question::after {
+      content: "+";
+      font-size: 1.4rem;
+      color: #7c3aed;
+      flex-shrink: 0;
+      transition: transform 0.25s;
+    }
+
+    .faq-item.open .faq-question::after {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 1.5rem;
+      font-size: 0.93rem;
+      color: #555;
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+      padding: 0 1.5rem 1.2rem;
+    }
+
     /* ========== FOOTER ========== */
     footer {
       text-align: center;
@@ -791,6 +853,39 @@
     </div>
   </section>
 
+  <!-- ========== FAQ ========== -->
+  <section class="section section-alt" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">よくある質問🙋</h2>
+        <p class="section-desc">みんなが気になること、まとめてみたよ！</p>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">初めての相談でも大丈夫？</button>
+          <div class="faq-answer">もちろん大丈夫！「こんなことを相談していいの？」と遙常がる必要は全くありません。アイデアの段階でもお気軽にドうぞ😊</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">納期はどれくらいかかる？</button>
+          <div class="faq-answer">規模によりますが、LPならおおよそ2～4週間、コーポレートサイトは1～3ヶ月が目安です。ヒアリング時にじっくりスケジュールを確認します！</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">途中で内容を変更してもいい？</button>
+          <div class="faq-answer">大丈夫です！進行中に「やっぱりこっちがいい」なんてこともよくあります。大きな変更の場合は別途相誳しますが、気軽に言ってください🙌</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">公開後の修正は対応してもらえる？</button>
+          <div class="faq-answer">はい！各プランにサポート期間を設けています。検字修正やレイアウト調整など、公開後も気軽に連絡してください！</div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-question">分割払いはできますか？</button>
+          <div class="faq-answer">はい、対応可能です！一般的に発注時に50％、納品時に50％の2回払いをお願いしています。お気軽にご相談ください🙏</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ========== CTA ========== -->
   <section class="cta-section" id="contact">
     <div class="container">
@@ -813,5 +908,15 @@
     <p>&copy; 2026 My Site. All rights reserved.</p>
   </footer>
 
+  <script>
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+  </script>
 </body>
 </html>
