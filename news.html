@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お知らせ一覧 | My Site</title>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+      background: #f5f5f5;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    header {
+      background: #2c3e50;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.95rem;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      opacity: 1;
+    }
+
+    .page-hero {
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      color: #fff;
+      text-align: center;
+      padding: 3.5rem 2rem;
+    }
+
+    .page-hero h2 {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-hero p {
+      opacity: 0.9;
+      font-size: 1rem;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    /* ---- フィルタータブ ---- */
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tabs button {
+      padding: 0.4rem 1.1rem;
+      border: 1px solid #3498db;
+      border-radius: 20px;
+      background: #fff;
+      color: #3498db;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .filter-tabs button.active,
+    .filter-tabs button:hover {
+      background: #3498db;
+      color: #fff;
+    }
+
+    /* ---- お知らせリスト ---- */
+    .news-list {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      overflow: hidden;
+    }
+
+    .news-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 1.2rem 1.75rem;
+      border-bottom: 1px solid #eee;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+    }
+
+    .news-item:last-child {
+      border-bottom: none;
+    }
+
+    .news-item:hover {
+      background: #f0f7fc;
+    }
+
+    .news-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+      min-width: 160px;
+    }
+
+    .news-date {
+      font-size: 0.85rem;
+      color: #888;
+      white-space: nowrap;
+    }
+
+    .news-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: bold;
+      padding: 0.15rem 0.6rem;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .tag-info    { background: #e8f4fd; color: #2980b9; }
+    .tag-service { background: #eafaf1; color: #27ae60; }
+    .tag-event   { background: #fef9e7; color: #d4a017; }
+    .tag-update  { background: #fdf2f8; color: #9b59b6; }
+
+    .news-title {
+      font-size: 0.95rem;
+      color: #333;
+    }
+
+    .news-item:hover .news-title {
+      color: #3498db;
+      text-decoration: underline;
+    }
+
+    /* ---- ページネーション ---- */
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 0.4rem;
+      margin-top: 2rem;
+    }
+
+    .pagination a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background: #fff;
+      color: #333;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .pagination a.active,
+    .pagination a:hover {
+      background: #3498db;
+      color: #fff;
+      border-color: #3498db;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.2rem;
+      font-size: 0.85rem;
+      color: #999;
+      background: #fff;
+      border-top: 1px solid #eee;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 560px) {
+      .news-item {
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+      .news-meta {
+        min-width: unset;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1><a href="index.html" style="color:#fff;text-decoration:none;">My Site</a></h1>
+    <nav>
+      <a href="index.html">ホーム</a>
+      <a href="about.html">About</a>
+      <a href="news.html" class="active">お知らせ</a>
+      <a href="contact.html">お問い合わせ</a>
+    </nav>
+  </header>
+
+  <section class="page-hero">
+    <h2>お知らせ一覧</h2>
+    <p>最新情報をお届けします。</p>
+  </section>
+
+  <main class="container">
+
+    <div class="filter-tabs">
+      <button class="active" onclick="filterNews('all', this)">すべて</button>
+      <button onclick="filterNews('info', this)">お知らせ</button>
+      <button onclick="filterNews('service', this)">サービス</button>
+      <button onclick="filterNews('event', this)">イベント</button>
+      <button onclick="filterNews('update', this)">アップデート</button>
+    </div>
+
+    <div class="news-list" id="newsList">
+
+      <a href="#" class="news-item" data-tag="event">
+        <div class="news-meta">
+          <span class="news-date">2026.03.10</span>
+          <span class="news-tag tag-event">イベント</span>
+        </div>
+        <span class="news-title">春のWebセミナー開催のお知らせ（4月15日）</span>
+      </a>
+
+      <a href="#" class="news-item" data-tag="service">
+        <div class="news-meta">
+          <span class="news-date">2026.03.05</span>
+          <span class="news-tag tag-service">サービス</span>
+        </div>
+        <span class="news-title">LP制作プランを新たにリリースしました</span>
+      </a>
+
+      <a href="#" class="news-item" data-tag="update">
+        <div class="news-meta">
+          <span class="news-date">2026.02.28</span>
+          <span class="news-tag tag-update">アップデート</span>
+        </div>
+        <span class="news-title">管理画面のUI刷新・パフォーマンス改善を実施しました</span>
+      </a>
+
+      <a href="#" class="news-item" data-tag="info">
+        <div class="news-meta">
+          <span class="news-date">2026.02.14</span>
+          <span class="news-tag tag-info">お知らせ</span>
+        </div>
+        <span class="news-title">2026年3月の祝日における対応について</span>
+      </a>
+
+      <a href="#" class="news-item" data-tag="service">
+        <div class="news-meta">
+          <span class="news-date">2026.01.31</span>
+          <span class="news-tag tag-service">サービス</span>
+        </div>
+        <span class="news-title">月額サポートプランの料金を改定しました</span>
+      </a>
+
+      <a href="#" class="news-item" data-tag="event">
+        <div class="news-meta">
+          <span class="news-date">2026.01.20</span>
+          <span class="news-tag tag-event">イベント</span>
+        </div>
+        <span class="news-title">Web制作勉強会 Vol.3 参加受付開始</span>
+      </a>
+
+      <a href="#" class="news-item" data-tag="info">
+        <div class="news-meta">
+          <span class="news-date">2026.01.06</span>
+          <span class="news-tag tag-info">お知らせ</span>
+        </div>
+        <span class="news-title">2026年の営業開始についてのご案内</span>
+      </a>
+
+      <a href="#" class="news-item" data-tag="update">
+        <div class="news-meta">
+          <span class="news-date">2025.12.20</span>
+          <span class="news-tag tag-update">アップデート</span>
+        </div>
+        <span class="news-title">セキュリティアップデートを適用しました</span>
+      </a>
+
+    </div>
+
+    <div class="pagination">
+      <a href="#" class="active">1</a>
+      <a href="#">2</a>
+      <a href="#">3</a>
+      <a href="#">&rsaquo;</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 My Site. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function filterNews(tag, btn) {
+      // タブのアクティブ切り替え
+      document.querySelectorAll('.filter-tabs button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // アイテムの表示切り替え
+      document.querySelectorAll('#newsList .news-item').forEach(item => {
+        if (tag === 'all' || item.dataset.tag === tag) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
